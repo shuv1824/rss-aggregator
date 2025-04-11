@@ -1,9 +1,11 @@
 -- +goose Up
-CREATETABLEusers(
-  idUUIDPRIMARYKEY,
-  created_atTIMESTAMPNOTNULL,
-  updated_atTIMESTAMPNOTNULL,
-  nameTEXTNOTNULL
+CREATE TABLE users (
+  id UUID PRIMARY KEY,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  name TEXT NOT NULL
 );
+
 -- +goose Down
-DROPTABLEusers;
+DROP TABLE users;
+
