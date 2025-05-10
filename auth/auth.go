@@ -9,7 +9,7 @@ import (
 // GetAPIKey extract api key from http header
 // Example:
 // Authorization: ApiKey {api_key}
-func getAPIKey(headers http.Header) (string, error) {
+func GetAPIKey(headers http.Header) (string, error) {
 	val := headers.Get("Authorization")
 	if val == "" {
 		return "", errors.New("no auth header")

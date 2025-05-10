@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/shuv1824/rss-aggregator/auth"
 	"github.com/shuv1824/rss-aggregator/internal/database"
 )
 
@@ -35,7 +36,7 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	respondWithJSON(w, 201, user)
+	respondWithJSON(w, 201, databaseUserToUser(user))
 }
 
 func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
@@ -45,10 +46,10 @@ func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	user, err := apiCfg.DB.GetUser(r.Context(), apiKey)
+	user, err := apiCfg.DB.GetUserByAPIKey(r.Context(), apiKey)
 	if err != nil {
-		respondWithError(w, 404, fmt.Sprintf("user not found: %v", err))
+		respondWithError(w, 400, fmt.Sprintf("user not found: %v", err))
 	}
 
-	respondWithJSON(w, 200, user)
+	respondWithJSON(w, 200, databaseUserToUser(user))
 }
