@@ -10,7 +10,7 @@ import (
 )
 
 func startScraping(
-	db database.Queries,
+	db *database.Queries,
 	concurrency int,
 	timeBetweenRequest time.Duration,
 ) {
@@ -30,12 +30,25 @@ func startScraping(
 		for _, feed := range feeds {
 			wg.Add(1)
 
-			go scrapeFeed(wg)
+			go scrapeFeed(db, wg, feed)
 		}
 		wg.Wait()
 	}
 }
 
-func scrapeFeed(wg *sync.WaitGroup) {
+func scrapeFeed(db *database.Queries, wg *sync.WaitGroup, feed database.Feed) {
 	defer wg.Done()
+
+	_, err := db.MarkFeedAsFetched(context.Background(), feed.ID)
+	if err != nil {
+		log.Println("Failed to mark feed as fetched:", err)
+		return
+	}
+
+	rssFeed, err := urlToFeed(feed.Url)
+	if err != nil {
+		log.Println("Failed to fetch feed from url:", err)
+		return
+	}
+
 }
