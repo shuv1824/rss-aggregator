@@ -1,0 +1,9 @@
+
+[sqlfluff]
+dialect = postgres
+templater = placeholder  # Treats $1, $2, etc. as valid placeholders
+exclude_rules = L009,L010,L014  # Optional: disable rules that conflict with sqlc/golang habits
+
+[sqlfluff:rules]
+tab_space_size = 2
+indent_unit = space
